@@ -46,3 +46,9 @@ app.*.map.json
 
 # Widget Preview related
 .widget_preview/
+
+# Signing keys (never commit to Git)
+*.jks
+*.keystore
+/android/key.properties
+
