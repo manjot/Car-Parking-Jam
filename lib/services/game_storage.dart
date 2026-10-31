@@ -87,3 +87,4 @@ class GameStorage {
     await prefs.setString(_kLevelStars, encodedStars);
   }
 }
+

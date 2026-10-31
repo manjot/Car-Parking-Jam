@@ -144,3 +144,4 @@ class AdConfig {
   /// Show an interstitial ad every N completed levels.
   static const int interstitialLevelFrequency = 2;
 }
+

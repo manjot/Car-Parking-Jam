@@ -570,3 +570,4 @@ class LevelGenerator {
     return null;
   }
 }
+

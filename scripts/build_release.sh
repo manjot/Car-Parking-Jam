@@ -60,3 +60,4 @@ echo "    Android App Bundle ready at: build/app/outputs/bundle/release/app-rele
 echo "==> Building Apple App Store IPA Archive..."
 flutter build ipa --release "${DART_DEFINES[@]}"
 echo "    iOS Archive ready at: build/ios/archive/Runner.xcarchive"
+
