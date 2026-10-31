@@ -1,0 +1,14 @@
+default_platform(:android)
+
+platform :android do
+  desc "Build and upload Car Parking Jam 3D AAB to Google Play Console"
+  lane :release do
+    sh("flutter", "build", "appbundle", "--release")
+    upload_to_play_store(
+      track: "production",
+      aab: "../build/app/outputs/bundle/release/app-release.aab",
+      skip_upload_images: true,
+      skip_upload_screenshots: true
+    )
+  end
+end
