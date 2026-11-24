@@ -62,6 +62,17 @@ class _GameScreenState extends State<GameScreen>
     super.initState();
     _loadLevel(_storage.currentLevel);
     _ticker = createTicker(_onTick)..start();
+
+    // Trigger App Tracking Transparency & Ad SDK initialization after the first
+    // active frame is rendered so iOS/iPadOS reliably presents the ATT dialog
+    // before any ad tracking data is collected.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Future.delayed(const Duration(milliseconds: 650), () {
+        if (mounted) {
+          _adService.initialize();
+        }
+      });
+    });
   }
 
   @override

@@ -14,7 +14,6 @@ Future<void> main() async {
   ]);
 
   await GameStorage.instance.load();
-  await AdService.instance.initialize();
 
   runApp(const CarParkingJamApp());
 }

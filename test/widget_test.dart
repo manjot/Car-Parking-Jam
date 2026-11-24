@@ -77,7 +77,7 @@ void main() {
     await AdService.instance.initialize();
 
     await tester.pumpWidget(const CarParkingJamApp());
-    await tester.pump(const Duration(milliseconds: 100));
+    await tester.pump(const Duration(milliseconds: 700));
 
     expect(find.textContaining('LEVEL 1'), findsOneWidget);
     expect(find.text('Auto Hint'), findsOneWidget);

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:unity_ads_plugin/unity_ads_plugin.dart';
 
@@ -77,6 +78,11 @@ class AdService extends ChangeNotifier {
     notifyListeners();
   }
 
+  static const MethodChannel _attChannel =
+      MethodChannel('com.manjot.car_parking_jam/att');
+  String _attStatus = 'notDetermined';
+  String get attStatus => _attStatus;
+
   Future<void> initialize() async {
     if (_isInitialized) return;
     _isInitialized = true;
@@ -91,10 +97,29 @@ class AdService extends ChangeNotifier {
       return;
     }
 
+    // Request iOS App Tracking Transparency authorization BEFORE any ad SDK
+    // initializes or collects tracking data (Apple Guideline 2.1 / 5.1.2).
+    if (defaultTargetPlatform == TargetPlatform.iOS) {
+      await _requestIosTrackingAuthorization();
+    }
+
     await Future.wait([
       _initAdMob(),
       _initUnityAds(),
     ]);
+  }
+
+  Future<void> _requestIosTrackingAuthorization() async {
+    try {
+      _log('Requesting iOS App Tracking Transparency permission...');
+      final status = await _attChannel
+          .invokeMethod<String>('requestTrackingAuthorization')
+          .timeout(const Duration(seconds: 60), onTimeout: () => 'timeout');
+      _attStatus = status ?? 'unknown';
+      _log('iOS ATT authorization status: $_attStatus');
+    } catch (e) {
+      _log('iOS ATT request error: $e');
+    }
   }
 
   Future<void> _initAdMob() async {
